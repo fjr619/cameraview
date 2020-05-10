@@ -1,0 +1,79 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <RelativeLayout
+        android:id="@+id/layoutPreview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:visibility="visible"
+        android:clickable="true"
+        android:focusable="true">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_flash_off" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="back" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:visibility="visible"
+        android:id="@+id/layoutCamera"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true">
+
+        <com.otaliastudios.cameraview.CameraView
+            android:id="@+id/cameraView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:keepScreenOn="true"
+            app:cameraAudio="off"
+            app:cameraAutoFocusMarker="@string/cameraview_default_autofocus_marker" app:cameraEngine="camera1"
+            app:cameraFacing="back"
+            app:cameraFlash="off"
+            app:cameraGestureTap="autoFocus"
+            app:cameraGestureLongTap="takePicture"
+            app:cameraGrid="off"
+            app:cameraMode="picture"
+            app:cameraPictureMetering="true"
+            app:cameraPictureSnapshotMetering="true"
+            app:cameraPlaySounds="false"
+            app:cameraRequestPermissions="false"
+            app:cameraPreview="glSurface"/>
+
+        <id.co.cicil.myapplication.camera.facedetection.core.FaceBoundsOverlay
+            android:id="@+id/facesBoundsOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <include layout="@layout/view_camera_guideline"/>
+
+        <include layout="@layout/view_camera_control"/>
+    </RelativeLayout>
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/progress"
+        android:background="@android:color/black"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"/>
+</FrameLayout>

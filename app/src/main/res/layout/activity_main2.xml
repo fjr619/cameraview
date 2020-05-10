@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <com.otaliastudios.cameraview.CameraView
+        android:id="@+id/cameraView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true"
+        app:cameraAudio="off"
+        app:cameraAutoFocusMarker="@string/cameraview_default_autofocus_marker"
+        app:cameraEngine="camera2"
+        app:cameraFacing="back"
+        app:cameraFlash="off"
+        app:cameraGestureTap="autoFocus"
+        app:cameraGrid="off"
+        app:cameraMode="picture"
+        app:cameraPictureMetering="true"
+        app:cameraPictureSnapshotMetering="true"
+        app:cameraPlaySounds="false"
+        app:cameraPreview="glSurface"
+        app:cameraRequestPermissions="false" />
+
+    <id.co.cicil.myapplication.camera.facedetection.core.FaceBoundsOverlay
+        android:id="@+id/facesBoundsOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <id.co.cicil.myapplication.camera.VerticalCardViewfinder
+        android:id="@+id/verticalCardViewfinder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <include
+        layout="@layout/view_camera_guideline" />
+    <include layout="@layout/view_camera_control" />
+
+</RelativeLayout>
