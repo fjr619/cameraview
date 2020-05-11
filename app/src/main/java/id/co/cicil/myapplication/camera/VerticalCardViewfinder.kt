@@ -14,6 +14,7 @@ import android.graphics.Paint.Align.CENTER
 import android.graphics.Paint.Style.FILL
 import android.graphics.Paint.Style.STROKE
 import android.graphics.Point
+import android.graphics.PorterDuff.Mode.ADD
 import android.graphics.PorterDuff.Mode.CLEAR
 import android.graphics.PorterDuffXfermode
 import android.graphics.RectF
@@ -62,10 +63,6 @@ class VerticalCardViewfinder @JvmOverloads constructor(
             val heightCard = bottomDraw - topDraw
             val widthCard = heightCard / cardAspectRatio
 
-//            Log.e("TAG", "xx canvas $width $height")
-//            Log.e("TAG", "xx area draw ${rightDraw - leftDraw}, ${bottomDraw - topDraw}")
-//            Log.e("TAG", "xx card size $widthCard $heightCard")
-
             val leftCard = (rightDraw - leftDraw) / 2 - widthCard / 2
             val rightCard = leftCard + widthCard
             val topCard = topDraw
@@ -84,26 +81,27 @@ class VerticalCardViewfinder @JvmOverloads constructor(
             val bitmap = Bitmap.createBitmap(width, height, ARGB_8888)
             val auxCanvas = Canvas(bitmap)
 
-            // then fill the bitmap with the desired outside color
-            paint.color = Color.BLACK
-            paint.alpha = 205
-            paint.style = FILL
-            auxCanvas.drawPaint(paint)
+            val outerPaint = Paint()
+            outerPaint.color = Color.BLACK // mention any background color
+            outerPaint.alpha = 150
 
-            // then punch a transparent hole in the shape of the rect
-            paint.xfermode = PorterDuffXfermode(CLEAR)
-            auxCanvas.drawRoundRect(rect, radius, radius, paint)
+            outerPaint.xfermode = PorterDuffXfermode(ADD)
+            outerPaint.isAntiAlias = true
+            auxCanvas.drawRect(0.0f, 0.0f, width.toFloat(), height.toFloat(), outerPaint)
 
-            // then draw the white rect border (being sure to get rid of the xfer mode!)
-            paint.xfermode = null
-            paint.color = Color.WHITE
-            paint.style = STROKE
-            paint.strokeWidth = 5f
-            // paint.pathEffect = DashPathEffect(floatArrayOf(40f, 20f), 0f)
-            auxCanvas.drawRoundRect(rect, radius, radius, paint)
+            val innerPaint = Paint()
+            innerPaint.color = Color.TRANSPARENT
+            innerPaint.xfermode = PorterDuffXfermode(CLEAR)
+            innerPaint.isAntiAlias = true
+            auxCanvas.drawRoundRect(rect, radius, radius, innerPaint)
 
-            // finally, draw the whole thing to the original canvas
-            canvas.drawBitmap(bitmap, 0f, 0f, paint)
+            val strokePaint = Paint()
+            strokePaint.color = Color.WHITE
+            strokePaint.style = STROKE
+            strokePaint.strokeWidth = 8f
+            auxCanvas.drawRoundRect(rect, radius, radius, strokePaint)
+
+            canvas.drawBitmap(bitmap, 0f, 0f, strokePaint)
 
             val paintText = Paint()
             paintText.color = Color.WHITE

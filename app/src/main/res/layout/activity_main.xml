@@ -11,11 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/black"
+        android:clickable="true"
+        android:focusable="true"
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin"
-        android:visibility="visible"
-        android:clickable="true"
-        android:focusable="true">
+        android:visibility="visible">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageView"
@@ -32,12 +32,12 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:visibility="visible"
         android:id="@+id/layoutCamera"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:visibility="visible">
 
         <com.otaliastudios.cameraview.CameraView
             android:id="@+id/cameraView"
@@ -45,35 +45,48 @@
             android:layout_height="match_parent"
             android:keepScreenOn="true"
             app:cameraAudio="off"
-            app:cameraAutoFocusMarker="@string/cameraview_default_autofocus_marker" app:cameraEngine="camera1"
+            app:cameraAutoFocusMarker="@string/cameraview_default_autofocus_marker"
+            app:cameraEngine="camera1"
             app:cameraFacing="back"
             app:cameraFlash="off"
-            app:cameraGestureTap="autoFocus"
             app:cameraGestureLongTap="takePicture"
+            app:cameraGestureTap="autoFocus"
             app:cameraGrid="off"
             app:cameraMode="picture"
             app:cameraPictureMetering="true"
             app:cameraPictureSnapshotMetering="true"
             app:cameraPlaySounds="false"
-            app:cameraRequestPermissions="false"
-            app:cameraPreview="glSurface"/>
+            app:cameraPreview="glSurface"
+            app:cameraRequestPermissions="false" />
 
         <id.co.cicil.myapplication.camera.facedetection.core.FaceBoundsOverlay
             android:id="@+id/facesBoundsOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <include layout="@layout/view_camera_guideline"/>
+        <id.co.cicil.myapplication.camera.VerticalCardViewfinder
+            android:id="@+id/verticalCardViewfinder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
 
-        <include layout="@layout/view_camera_control"/>
+        <id.co.cicil.myapplication.camera.SelfieCardViewfinder
+            android:id="@+id/selfieCardViewfinder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <include layout="@layout/view_camera_guideline" />
+
+        <include layout="@layout/view_camera_control" />
     </RelativeLayout>
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/progress"
-        android:background="@android:color/black"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/black"
         android:clickable="true"
-        android:focusable="true"/>
+        android:focusable="true" />
 </FrameLayout>

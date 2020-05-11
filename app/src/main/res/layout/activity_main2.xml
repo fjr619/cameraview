@@ -16,13 +16,14 @@
         app:cameraEngine="camera2"
         app:cameraFacing="back"
         app:cameraFlash="off"
-        app:cameraGestureTap="autoFocus"
         app:cameraGrid="off"
         app:cameraMode="picture"
+        app:cameraGestureTap="autoFocus"
         app:cameraPictureMetering="true"
         app:cameraPictureSnapshotMetering="true"
         app:cameraPlaySounds="false"
         app:cameraPreview="glSurface"
+        app:cameraAutoFocusResetDelay="500"
         app:cameraRequestPermissions="false" />
 
     <id.co.cicil.myapplication.camera.facedetection.core.FaceBoundsOverlay
@@ -31,7 +32,14 @@
         android:layout_height="match_parent" />
 
     <id.co.cicil.myapplication.camera.VerticalCardViewfinder
+        android:visibility="visible"
         android:id="@+id/verticalCardViewfinder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <id.co.cicil.myapplication.camera.SelfieCardViewfinder
+        android:visibility="gone"
+        android:id="@+id/selfieCardViewfinder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

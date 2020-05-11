@@ -90,7 +90,6 @@ class MainActivity2 : AppCompatActivity() /*, FrameProcessor*/, OnClickListener 
         FrameProcessor { frame: Frame ->
             Log.e("TAG", "size ${frame.size.width} ${frame.size.height}")
             if (cameraView.facing == BACK) Log.e("TAG","xx rect top ${verticalCardViewfinder.rect.top} ${verticalCardViewfinder.width}")
-
             faceDetector.process(
                 id.co.cicil.myapplication.camera.facedetection.core.model.Frame(
                     data = frame.getData(),
@@ -106,8 +105,6 @@ class MainActivity2 : AppCompatActivity() /*, FrameProcessor*/, OnClickListener 
         override fun onCameraOpened(options: CameraOptions) {
             super.onCameraOpened(options)
             Log.e("TAG", "xx onCameraOpened")
-
-
 //            cameraView.addFrameProcessor(mFrameProcessor)
         }
 
