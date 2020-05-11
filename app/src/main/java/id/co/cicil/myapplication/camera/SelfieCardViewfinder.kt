@@ -104,7 +104,7 @@ class SelfieCardViewfinder @JvmOverloads constructor(
         strokePaint.color = Color.WHITE
         strokePaint.style = STROKE
         strokePaint.strokeWidth = 8f
-        strokePaint.pathEffect = DashPathEffect(floatArrayOf(40f, 20f), 0f)
+//        strokePaint.pathEffect = DashPathEffect(floatArrayOf(40f, 20f), 0f)
         auxCanvas.drawOval(rectSelfie, strokePaint)
         auxCanvas.drawRoundRect(rectCard, radius, radius,  strokePaint)
 
