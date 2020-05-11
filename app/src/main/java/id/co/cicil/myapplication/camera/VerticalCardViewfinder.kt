@@ -99,6 +99,7 @@ class VerticalCardViewfinder @JvmOverloads constructor(
             strokePaint.color = Color.WHITE
             strokePaint.style = STROKE
             strokePaint.strokeWidth = 8f
+            strokePaint.pathEffect = DashPathEffect(floatArrayOf(40f, 20f), 0f)
             auxCanvas.drawRoundRect(rect, radius, radius, strokePaint)
 
             canvas.drawBitmap(bitmap, 0f, 0f, strokePaint)

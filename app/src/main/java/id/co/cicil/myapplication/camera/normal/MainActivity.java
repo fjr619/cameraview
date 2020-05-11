@@ -41,6 +41,8 @@ import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.PictureResult;
 import com.otaliastudios.cameraview.controls.Facing;
 import com.otaliastudios.cameraview.controls.Flash;
+import id.co.cicil.myapplication.camera.SelfieCardViewfinder;
+import id.co.cicil.myapplication.camera.VerticalCardViewfinder;
 import id.co.cicil.myapplication.camera.utils.FileUtils;
 import id.co.cicil.myapplication.camera.R;
 import id.co.cicil.myapplication.camera.facedetection.core.model.Orientation;
@@ -64,9 +66,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     private RelativeLayout layoutCamera, layoutPreview;
 
+    private SelfieCardViewfinder mSelfieCardViewfinder;
+
+    private VerticalCardViewfinder mVerticalCardViewfinder;
+
     private FrameLayout root;
 
-    private AppCompatImageView imageView, imageUserCard, imageUserFace, imageUserCard2;
+    private AppCompatImageView imageView;
 
     private AppCompatButton btnBack;
 
@@ -96,14 +102,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(this);
 
+        mSelfieCardViewfinder = findViewById(R.id.selfieCardViewfinder);
+        mVerticalCardViewfinder = findViewById(R.id.verticalCardViewfinder);
+
         layoutCamera = findViewById(R.id.layoutCamera);
         layoutPreview = findViewById(R.id.layoutPreview);
         root = findViewById(R.id.root);
         imageView = findViewById(R.id.imageView);
         root.bringChildToFront(layoutCamera);
-        imageUserCard = findViewById(R.id.imageUserCard);
-        imageUserFace = findViewById(R.id.imageUserFace);
-        imageUserCard2 = findViewById(R.id.imageUserCard2);
         progress = findViewById(R.id.progress);
         camera.setLifecycleOwner(this);
         camera.startAutoFocus(camera.getWidth() / 2F, camera.getHeight() / 2F);
@@ -163,13 +169,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             }
 
             if (isCameraBack) {
-                imageUserCard.setVisibility(View.VISIBLE);
-                imageUserFace.setVisibility(View.GONE);
-                imageUserCard2.setVisibility(View.GONE);
+                mSelfieCardViewfinder.setVisibility(View.GONE);
+                mVerticalCardViewfinder.setVisibility(View.VISIBLE);
             } else {
-                imageUserCard.setVisibility(View.GONE);
-                imageUserFace.setVisibility(View.VISIBLE);
-                imageUserCard2.setVisibility(View.VISIBLE);
+                mSelfieCardViewfinder.setVisibility(View.VISIBLE);
+                mVerticalCardViewfinder.setVisibility(View.GONE);
             }
 
             if (!options.getSupportedFacing().contains(Facing.FRONT)) {
