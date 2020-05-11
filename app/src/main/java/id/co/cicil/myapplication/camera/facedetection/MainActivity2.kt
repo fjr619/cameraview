@@ -1,11 +1,14 @@
 package id.co.cicil.myapplication.camera.facedetection
 
+import android.graphics.RectF
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.GONE
 import android.view.View.OnClickListener
+import android.view.View.VISIBLE
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.ml.vision.FirebaseVision
@@ -24,6 +27,7 @@ import id.co.cicil.myapplication.camera.facedetection.core.FaceDetector
 import id.co.cicil.myapplication.camera.facedetection.core.model.Size
 import kotlinx.android.synthetic.main.activity_main2.cameraView
 import kotlinx.android.synthetic.main.activity_main2.facesBoundsOverlay
+import kotlinx.android.synthetic.main.activity_main2.selfieCardViewfinder
 import kotlinx.android.synthetic.main.activity_main2.verticalCardViewfinder
 import kotlinx.android.synthetic.main.view_camera_control.cameraSwitch
 import kotlinx.android.synthetic.main.view_camera_control.capturePicture
@@ -53,26 +57,6 @@ class MainActivity2 : AppCompatActivity() /*, FrameProcessor*/, OnClickListener 
         cameraView.addCameraListener(Listener())
         cameraSwitch.setOnClickListener(this)
         capturePicture.setOnClickListener(this)
-
-        // set a global layout listener which will be called when the layout pass is completed and the view is drawn
-        imageUserFace.getViewTreeObserver().addOnGlobalLayoutListener(
-            object : OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    //Remove the listener before proceeding
-                    listPosition.add(imageUserFace.left)
-                    listPosition.add(imageUserFace.right)
-                    listPosition.add(imageUserFace.top)
-                    listPosition.add(imageUserFace.bottom)
-                    // 185 894 126 1019
-                    Log.e(
-                        "TAG",
-                        "${imageUserFace.left} ${imageUserFace.right} ${imageUserFace.top} ${imageUserFace.bottom}"
-                    )
-
-                        imageUserFace.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                }
-            }
-        )
     }
 
     override fun onClick(v: View?) {
@@ -81,15 +65,20 @@ class MainActivity2 : AppCompatActivity() /*, FrameProcessor*/, OnClickListener 
                 cameraView.toggleFacing()
             }
             capturePicture -> {
-                if (cameraView.facing == BACK) Log.e("TAG","xx rect top ${verticalCardViewfinder.rect.top} ${verticalCardViewfinder.width}")
+                if (cameraView.facing == BACK) Log.e("TAG","xx rect top ${verticalCardViewfinder.rect.top}")
+                else
+                    Log.e("TAG","xx rect top ${selfieCardViewfinder.rectSelfie.top}")
             }
         }
     }
 
     private val mFrameProcessor =
         FrameProcessor { frame: Frame ->
-            Log.e("TAG", "size ${frame.size.width} ${frame.size.height}")
-            if (cameraView.facing == BACK) Log.e("TAG","xx rect top ${verticalCardViewfinder.rect.top} ${verticalCardViewfinder.width}")
+            if (cameraView.facing == BACK)
+                Log.e("TAG", "xx rect top ${verticalCardViewfinder.rect.top}")
+            else
+                Log.e("TAG", "xx rect top ${selfieCardViewfinder.rectSelfie.top} ")
+
             faceDetector.process(
                 id.co.cicil.myapplication.camera.facedetection.core.model.Frame(
                     data = frame.getData(),
@@ -97,22 +86,28 @@ class MainActivity2 : AppCompatActivity() /*, FrameProcessor*/, OnClickListener 
                     size = Size(frame.size.width, frame.size.height),
                     format = frame.format,
                     isCameraFacingBack = cameraView.facing == Facing.BACK
-                ), listPosition
+                ), selfieCardViewfinder.rectSelfie
             )
         }
 
     inner class Listener : CameraListener() {
         override fun onCameraOpened(options: CameraOptions) {
             super.onCameraOpened(options)
-            Log.e("TAG", "xx onCameraOpened")
-//            cameraView.addFrameProcessor(mFrameProcessor)
+            cameraView.addFrameProcessor(mFrameProcessor)
         }
 
         override fun onCameraClosed() {
-            faceDetector.remove()
-//            cameraView.removeFrameProcessor(mFrameProcessor)
+//            faceDetector.remove()
+            cameraView.removeFrameProcessor(mFrameProcessor)
             super.onCameraClosed()
-            Log.e("TAG", "xx onCameraClosed ${cameraView.facing}")
+
+            if (cameraView.facing == FRONT) {
+                verticalCardViewfinder.visibility = GONE
+                selfieCardViewfinder.visibility = VISIBLE
+            } else {
+                verticalCardViewfinder.visibility = VISIBLE
+                selfieCardViewfinder.visibility = GONE
+            }
         }
     }
 

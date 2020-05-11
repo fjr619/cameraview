@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -48,8 +49,7 @@ class FaceBoundsOverlay @JvmOverloads constructor(
     private val idPaint = Paint()
     private val boundsPaint = Paint()
     private val correctPaint = Paint()
-    val listPosition = ArrayList<Int>()
-
+    private val rectFaceFinder = RectF()
     var cameraPreviewWidth: Float = 0f
     var cameraPreviewHeight: Float = 0f
     var cameraOrientation: Orientation =
@@ -68,7 +68,7 @@ class FaceBoundsOverlay @JvmOverloads constructor(
         boundsPaint.strokeWidth = 4f
 
         correctPaint.color = ContextCompat.getColor(ctx, color.holo_green_light)
-        correctPaint.style = Paint.Style.STROKE
+        correctPaint.style = Paint.Style.FILL
         correctPaint.alpha = 100
         correctPaint.strokeWidth = 10f
     }
@@ -76,9 +76,9 @@ class FaceBoundsOverlay @JvmOverloads constructor(
     /**
      * Repopulates the face bounds list, and calls for a redraw of the view.
      */
-    fun updateFaces(bounds: List<FaceBounds>, listPosition: ArrayList<Int>) {
-        this.listPosition.clear()
-        this.listPosition.addAll(listPosition)
+    fun updateFaces(bounds: List<FaceBounds>, rectFaceFinder: RectF) {
+        this.rectFaceFinder.setEmpty()
+        this.rectFaceFinder.set(rectFaceFinder)
         facesBounds.clear()
         facesBounds.addAll(bounds)
         invalidate()
@@ -157,19 +157,15 @@ class FaceBoundsOverlay @JvmOverloads constructor(
         val top = centerY - yOffset
         val bottom = centerY + yOffset
 
-        val rectA = Rect(left.toInt(), top.toInt(), right.toInt(), bottom.toInt())
-        val rectB = Rect(
-            listPosition[0],
-            listPosition[2],
-            listPosition[1],
-            listPosition[3]
-        )
+        val rectA = RectF(left, top, right, bottom)
 
-        if (rectB.contains(rectA)) {
+        if (!rectFaceFinder.isEmpty && rectFaceFinder.contains(rectA)) {
             canvas.drawRect(
-                rectB,
+                rectFaceFinder,
                 correctPaint
             )
+
+            //TODO update selfieCardViewFinder!! should be in activity or fragment
         } else {
             canvas.drawRect(
                 rectA,
@@ -188,12 +184,6 @@ class FaceBoundsOverlay @JvmOverloads constructor(
      */
     private fun scaleY(y: Float, canvas: Canvas) =
         y * (canvas.height.toFloat() / cameraPreviewHeight)
-
-    fun removeFaces() {
-        this.listPosition.clear()
-        facesBounds.clear()
-        invalidate()
-    }
 
     companion object {
         private const val ANCHOR_RADIUS = 10f

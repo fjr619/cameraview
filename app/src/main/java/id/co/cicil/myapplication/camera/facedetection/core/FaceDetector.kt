@@ -1,5 +1,6 @@
 package id.co.cicil.myapplication.camera.facedetection.core
 
+import android.graphics.RectF
 import android.widget.Toast
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
@@ -20,13 +21,9 @@ class FaceDetector(private val faceBoundsOverlay: FaceBoundsOverlay) {
     private val firebaseFaceDetectorWrapper =
         FirebaseFaceDetectorWrapper()
 
-    fun process(frame: Frame, listPosition: ArrayList<Int>) {
+    fun process(frame: Frame, rectFaceFinder: RectF) {
         updateOverlayAttributes(frame)
-        detectFacesIn(frame, listPosition)
-    }
-
-    fun remove(){
-        faceBoundsOverlay.removeFaces()
+        detectFacesIn(frame, rectFaceFinder)
     }
 
     private fun updateOverlayAttributes(frame: Frame) {
@@ -43,12 +40,12 @@ class FaceDetector(private val faceBoundsOverlay: FaceBoundsOverlay) {
             })
     }
 
-    private fun detectFacesIn(frame: Frame, listPosition: ArrayList<Int>) {
+    private fun detectFacesIn(frame: Frame, rectFaceFinder: RectF) {
         frame.data?.let {
             firebaseFaceDetectorWrapper.process(
                 image = convertFrameToImage(frame),
                 onSuccess = {
-                    faceBoundsOverlay.updateFaces(convertToListOfFaceBounds(it), listPosition)
+                    faceBoundsOverlay.updateFaces(convertToListOfFaceBounds(it), rectFaceFinder)
                 },
                 onError = {
                     Toast.makeText(faceBoundsOverlay.context, "Error processing images: $it", Toast.LENGTH_LONG).show()

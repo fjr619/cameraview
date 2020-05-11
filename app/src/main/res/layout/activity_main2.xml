@@ -32,7 +32,6 @@
         android:layout_height="match_parent" />
 
     <id.co.cicil.myapplication.camera.VerticalCardViewfinder
-        android:visibility="visible"
         android:id="@+id/verticalCardViewfinder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
