@@ -55,7 +55,7 @@ class VerticalCardViewfinder @JvmOverloads constructor(
             // set up some constants
             val leftDraw = 0f
             val rightDraw = width.toFloat()
-            val topDraw = ctx.resources.getDimension(R.dimen.margin_medium)
+            val topDraw = ctx.resources.getDimension(R.dimen.margin_large)
             val bottomDraw =
                 (height - ctx.resources.getDimension(R.dimen.height_camera_control) - ctx.resources.getDimension(R.dimen.margin_medium))
 
@@ -111,7 +111,7 @@ class VerticalCardViewfinder @JvmOverloads constructor(
             canvas.drawText(
                 "Position Card in this Frame",
                 (width / 2).toFloat(),
-                (height - ctx.resources.getDimension(R.dimen.height_camera_control) - ctx.resources.getDimension(R.dimen.margin_xsmall)),
+                ctx.resources.getDimension(R.dimen.margin_medium),
                 paintText
             )
 

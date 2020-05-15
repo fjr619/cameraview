@@ -1,20 +1,14 @@
 package id.co.cicil.myapplication.camera.facedetection
 
-import android.graphics.RectF
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.OnClickListener
 import android.view.View.VISIBLE
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.ml.vision.FirebaseVision
-import com.google.firebase.ml.vision.common.FirebaseVisionImage
-import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
-import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
 import com.otaliastudios.cameraview.CameraListener
 import com.otaliastudios.cameraview.CameraOptions
 import com.otaliastudios.cameraview.controls.Facing
@@ -31,7 +25,7 @@ import kotlinx.android.synthetic.main.activity_main2.selfieCardViewfinder
 import kotlinx.android.synthetic.main.activity_main2.verticalCardViewfinder
 import kotlinx.android.synthetic.main.view_camera_control.cameraSwitch
 import kotlinx.android.synthetic.main.view_camera_control.capturePicture
-import kotlinx.android.synthetic.main.view_camera_guideline.imageUserFace
+import kotlinx.android.synthetic.main.view_camera_control.exposureCorrection
 
 /**
  * Created by Franky Wijanarko on 09/05/2020.
@@ -93,12 +87,36 @@ class MainActivity2 : AppCompatActivity() /*, FrameProcessor*/, OnClickListener 
     inner class Listener : CameraListener() {
         override fun onCameraOpened(options: CameraOptions) {
             super.onCameraOpened(options)
-            cameraView.addFrameProcessor(mFrameProcessor)
+//            cameraView.addFrameProcessor(mFrameProcessor)
+
+            if (options.isExposureCorrectionSupported) {
+                exposureCorrection.visibility = VISIBLE
+
+                val maxExposure = options.exposureCorrectionMaxValue
+                val minExposure = options.exposureCorrectionMinValue
+                val step = 0.1f
+
+                exposureCorrection.max = ((maxExposure - minExposure) / step).toInt()
+                exposureCorrection.progress = exposureCorrection.max / 2
+
+                exposureCorrection.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+                    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                        val value = minExposure + progress * step
+                        cameraView.exposureCorrection = value
+                    }
+
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+                })
+            } else {
+                exposureCorrection.visibility = GONE
+            }
         }
 
         override fun onCameraClosed() {
 //            faceDetector.remove()
-            cameraView.removeFrameProcessor(mFrameProcessor)
+//            cameraView.removeFrameProcessor(mFrameProcessor)
             super.onCameraClosed()
 
             if (cameraView.facing == FRONT) {

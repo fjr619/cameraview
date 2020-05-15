@@ -1,43 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cameraUi"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_camera_control"
     android:layout_alignParentBottom="true"
-    android:layoutDirection="ltr">
+    android:layoutDirection="ltr"
+    android:orientation="vertical">
 
-    <!-- Camera control and gallery buttons -->
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/cameraSwitch"
-        android:layout_width="@dimen/round_button_medium"
-        android:layout_height="@dimen/round_button_medium"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/margin_small"
-        android:background="@android:color/transparent"
-        android:padding="@dimen/spacing_small"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_switch" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginRight="@dimen/margin_xlarge"
+        android:layout_marginLeft="@dimen/margin_xlarge"
+        android:layout_height="30dp">
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/capturePicture"
-        android:layout_width="@dimen/round_button_large"
-        android:layout_height="@dimen/round_button_large"
-        android:layout_centerInParent="true"
-        android:background="@drawable/ic_shutter"
-        android:scaleType="fitCenter"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        <id.co.cicil.myapplication.camera.StartPointSeekBar
+            android:id="@+id/exposureCorrection"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:thumb="@drawable/ic_exposure"
+            android:progressDrawable="@android:color/transparent"/>
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/cameraFlash"
-        android:layout_width="@dimen/round_button_medium"
-        android:layout_height="@dimen/round_button_medium"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:background="@drawable/ic_outer_circle"
-        android:padding="@dimen/spacing_large"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_flash_off" />
+    </RelativeLayout>
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- Camera control and gallery buttons -->
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/cameraSwitch"
+            android:layout_width="@dimen/round_button_medium"
+            android:layout_height="@dimen/round_button_medium"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/margin_small"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/spacing_small"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_switch" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/capturePicture"
+            android:layout_width="@dimen/round_button_large"
+            android:layout_height="@dimen/round_button_large"
+            android:layout_centerInParent="true"
+            android:background="@drawable/ic_shutter"
+            android:scaleType="fitCenter"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/cameraFlash"
+            android:layout_width="@dimen/round_button_medium"
+            android:layout_height="@dimen/round_button_medium"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:background="@drawable/ic_outer_circle"
+            android:padding="@dimen/spacing_large"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_flash_off" />
+    </RelativeLayout>
+</LinearLayout>
